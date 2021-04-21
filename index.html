@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+ <html>
+ <head>
+     <meta charset='utf-8' />
+     <title>Owners vs Renters Map</title>
+     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+     <style>
+         body { margin:0; padding:0; }
+         #map { position:absolute; top:0; bottom:0; width:100%; }
+            /*  stlye for paragraph tags */
+       p {
+         color: white; 
+       }
+
+       /* style for heading level 4 tags */
+       h4 { 
+         color: white;
+         margin-left: 10px;
+       }
+
+       /*  style for items with the class "LegendContainer" */
+       .LegendContainer {
+         position: absolute;
+         bottom: 20px;
+         left: 20px;
+         z-index: 2;
+         width: 300px;
+         height: 40px;
+         background: rgba(80, 80, 80, .75);
+         transition: width 2s, height 2s;
+         border-radius: 7px;
+       }
+
+       /*  style for items with the class "descriptionPanel" */
+       .descriptionPanel {
+         position: absolute;
+         bottom: 65px;
+         left: 20px;
+         z-index: 2;
+         width: 300px;
+         height: 40px;
+         background: rgba(80, 80, 80, .75);
+         transition: width 2s, height 2s;
+         overflow: hidden;
+         border-radius: 7px;
+       }
+
+       /*  style for items with the class "descriptionPanel" when active */
+       .LegendContainer:active {
+         width: 240px;
+         height: 250px;
+       }
+
+       /* style for items with the class "legendItem" */
+       .legendItem {
+         float: left;
+         width: 50%;
+         margin-top: 10px;
+         margin-bottom: 10px;
+       }
+
+       /* style for items with the class "colorBox" */
+       .colorBox {
+         width: 20px;
+         height: 20px;
+         float: left;
+         border-radius: 10px;
+         margin-left: 10px;
+       }
+
+       /* style for items with the class "layerDescription" */
+       .layerDescription {
+         color: white;
+         float: left;
+         margin-left: 10px;
+       }
+
+       /* style for items with the class "chevron" */
+       .chevron {
+         position: relative;
+         margin-left: 45%;
+         font-size: x-large;
+         color: white;
+       }
+     </style>
+ </head>
+ <body>
+
+   <div id='map'></div>
+     // Map description panel
+       <div class="descriptionPanel" id="descriptionPanel" style="height: 320px;">
+         <span onClick=panelSelect() id="glyph" class="chevron glyphicon glyphicon-chevron-down"></span>
+         <hr />
+         <h4>WHAT AM I LOOKING AT?</h4><br />
+         <p style="margin-left: 10px; margin-right: 10px;">
+         This is a map showing every single person in the United States as a dot. Data is taken from the 2017 US Census, and is accurate at the level of a block, however within each block location is randomized. Points are colored based on number home owners versus renters on a block.
+         </p>
+      </div>
+     // helps user differentiate between dot color meanings
+        <div class="LegendContainer">
+     <div class="legendItem">
+         <div class="colorBox" style="background-color: #43f446;"></div>
+         <div class="layerDescription">Owners</div>
+     </div>
+     <div class="legendItem">
+         <div class="colorBox" style="background-color: #f47e43;"></div>
+         <div class="layerDescription">Renters</div>
+     </div>
+   </div>
+   <script>
+     mapboxgl.accessToken = 'pk.eyJ1IjoiZG91Z2tlYW4iLCJhIjoiY2tuNmZidXNtMDJ1NjJzcDVyamFiYzB1cyJ9.UOmZ5MnMSJyZklHwhJ8XhA'; 
+     var map = new mapboxgl.Map({
+         container: 'map', // container id
+         style: 'mapbox://styles/dougkean/cknqnt8yb03yo17lydkf2n4bt', // stylesheet location
+     });
+        // Add zoom and rotation controls to the map.
+ map.addControl(new mapboxgl.NavigationControl());
+       // legend interaction
+             var state = { panelOpen: true };
+
+      function panelSelect(e){
+        if(state.panelOpen){
+          document.getElementById('descriptionPanel').style.height = '26px';
+          document.getElementById('glyph').className = "chevron glyphicon glyphicon-chevron-up";
+          state.panelOpen = false;
+        } else {
+          document.getElementById('descriptionPanel').style.height = '320px';
+          document.getElementById('glyph').className = "chevron glyphicon glyphicon-chevron-down";
+          state.panelOpen = true;
+        }
+      }
+   </script>
+
+ </body>
+ </html>
